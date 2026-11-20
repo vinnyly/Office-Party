@@ -15,6 +15,7 @@ public class BossMovement : MonoBehaviour
     private BoardGrid grid;
     private PlayerMovement[] players;
 
+    private float currentCellsPerSecond;
     private Vector2Int currentCell;
     private Vector2Int destinationCell;
     private Vector3 targetPosition;
@@ -31,16 +32,29 @@ public class BossMovement : MonoBehaviour
         Vector2Int.left
     };
 
-    // Resets the boss and builds the patrol for this round's seed.
+    public float BaseSpeed => cellsPerSecond;
+    public float CurrentSpeed => currentCellsPerSecond;
+
+    // Resets the boss at its base speed and builds the patrol for this round's seed.
     public bool Initialize(
         BoardGrid board,
         PlayerMovement[] trackedPlayers,
         int seed)
     {
+        return Initialize(board, trackedPlayers, seed, cellsPerSecond);
+    }
+
+    // Resets the boss with an explicit starting speed and builds the patrol for this seed.
+    public bool Initialize(
+        BoardGrid board,
+        PlayerMovement[] trackedPlayers,
+        int seed,
+        float initialSpeed)
+    {
         grid = board;
         players = trackedPlayers;
 
-        if (!grid.IsWalkable(startCell) || cellsPerSecond <= 0f)
+        if (!grid.IsWalkable(startCell) || initialSpeed <= 0f)
         {
             Debug.LogError(
                 "Boss needs a walkable Start Cell and positive speed.",
@@ -50,12 +64,19 @@ public class BossMovement : MonoBehaviour
             return false;
         }
 
+        currentCellsPerSecond = initialSpeed;
         currentCell = startCell;
         transform.position = GetPosition(startCell);
         isMoving = false;
 
         GeneratePatrol(seed);
         return true;
+    }
+
+    // Updates the boss's runtime movement speed without mutating the Inspector base speed.
+    public void SetSpeed(float newCellsPerSecond)
+    {
+        currentCellsPerSecond = Mathf.Max(0.01f, newCellsPerSecond);
     }
 
     // Shuffles the nine corners and intersections into a repeatable route.
@@ -104,7 +125,7 @@ public class BossMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards(
             transform.position,
             targetPosition,
-            cellsPerSecond * grid.cellSize * deltaTime
+            currentCellsPerSecond * grid.cellSize * deltaTime
         );
 
         if (transform.position == targetPosition)

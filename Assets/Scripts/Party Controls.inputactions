@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "Party Controls",
+    "maps": [
+        {
+            "name": "New action map",
+            "id": "7f23117d-8f16-43d7-84d6-499f11352661",
+            "actions": [
+                {
+                    "name": "Up",
+                    "type": "Button",
+                    "id": "aa20dd8e-53e8-4562-b3ea-b1855530371e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3ae4a477-b2bb-4b0d-91a6-b9a14747bfec",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c156437f-1e42-4b70-91bf-6d81fb130892",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
